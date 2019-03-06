@@ -1,0 +1,96 @@
+<!DOCTYPE HTML>
+
+<html>
+	<head>
+		<title>set pages</title>
+	</head>
+	<body>
+		総ページ数 <input type="text" id="allPage"><br>
+		オプション <input type="text" id="option"><br>
+		空白ページ <input type="text" id="nullPage"><br>
+		最後のページ <input type="text" id="lastPage"><br>
+		区切り文字 <input type="text" id="subsection"><br>
+		<input type="button" id="create" value="create" onClick="createPages()"><br>
+		<br>
+		結果<br>
+		<p id="output"></p>
+		<p id="output1"></p>
+		
+		<script>
+			function createPages(){
+				var allPage=document.getElementById("allPage").value;
+				var opti=document.getElementById("option").value;
+				var subSec=document.getElementById("subsection").value;
+				var lastPage=document.getElementById("lastPage").value;
+				var nullPage=document.getElementById("nullPage").value;
+				
+				//console.log(allPage+" "+opti+" "+subSec);
+				
+				var usePaper=allPage/4|0;
+				
+				if(allPage%4){
+					usePaper++;
+				}
+				
+				//console.log(usePaper);
+				
+				var output="";
+				var output1="";
+				var p0,p1,p2,p3;
+				
+				console.log("lastPage = "+lastPage);
+				
+				for(var i=0; i<usePaper; i++){
+					p0=4*usePaper-(2*i);
+					p1=2*i+1;
+					p2=2*i+2;
+					p3=4*usePaper-(2*i+1);
+					
+					if(lastPage!=""){
+						if(p0==lastPage)p0=nullPage;
+						else if(p1==lastPage)p1=nullPage;
+						else if(p2==lastPage)p2=nullPage;
+						else if(p3==lastPage)p3=nullPage;
+					}
+					
+					if(p0>allPage)p0=nullPage;
+					if(i==0&&lastPage!="")p0=lastPage;
+					if(p3>allPage)p3=nullPage;
+										
+					output+= addZero(i+1,numDig(usePaper))+"枚目 : "+p0+subSec+p1+subSec+p2+subSec+p3+"<br>";
+					output1+=p0+subSec+p1+subSec+p2+subSec+p3;
+					if(i!=usePaper-1)output1+=subSec;
+				}
+				
+				//console.log(output);
+				
+				document.getElementById("output").innerHTML=output;
+				document.getElementById("output1").innerHTML=output1;
+			}
+			
+			function addZero(num,dig){
+				var res=num;
+				for(var i=1;i<dig;i++){
+					if(num<pow(10,i))res="_"+res;
+				}
+				return res;
+			}
+			
+			function pow(num,power){
+				var res=1;
+				for(var i=0; i<power; i++){
+					res*=num;
+				}
+				return res;
+			}
+			
+			function numDig(num){
+				for(var i=0;(num/10|0)>0;i++){
+					num=num/10|0;
+				}
+				console.log(i);
+				return i+1;
+			}
+		</script>
+	</body>
+</html>
